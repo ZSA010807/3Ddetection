@@ -1,3 +1,7 @@
-  gt_box = np.concatenate((gt[0]['location'], gt[0]['dimensions'], gt[0]['rotation_y'].reshape(-1, 1)))
-  File "<__array_function__ internals>", line 5, in concatenate
-ValueError: all the input array dimensions for the concatenation axis must match exactly, but along dimension 1, the array at index 0 has size 3 and the array at index 2 has size 1
+    config = {
+        'NAME': random_beam_upsample,
+        'BEAM': 32,
+        'BEAM_PROB': [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5,
+                      0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+        'PHI_THRESHOLD': 0.03
+    }
