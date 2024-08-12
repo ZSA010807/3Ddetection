@@ -35,3 +35,18 @@ bounding_box_3d = (min_corner, max_corner)
 
 # 打印或返回结果
 print("3D Bounding Box:", bounding_box_3d)
+
+
+
+def project_from_ego_to_cam(pts_3d, extrinsic):
+    pts_3d_hom = np.hstack((pts_3d, np.ones((pts_3d.shape[0], 1))))
+    uv_cam = extrinsic.dot(pts_3d_hom.transpose()).transpose()[:, 0:3]
+    return uv_cam
+
+
+def project_cam_to_image(intrinsic, points_rect):
+    hom = np.hstack((points_rect, np.ones((points_rect.shape[0], 1))))
+    pts_2d = np.dot(hom, np.transpose(intrinsic)) # nx3
+    pts_2d[:,0] /= pts_2d[:,2]
+    pts_2d[:,1] /= pts_2d[:,2]
+    return pts_2d[:, :2]
