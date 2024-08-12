@@ -50,3 +50,23 @@ def project_cam_to_image(intrinsic, points_rect):
     pts_2d[:,0] /= pts_2d[:,2]
     pts_2d[:,1] /= pts_2d[:,2]
     return pts_2d[:, :2]
+
+            inside = (0 <= bbox[1] < im_height and 0 < bbox[3] <= im_height) and (
+                        0 <= bbox[0] < im_width and 0 < bbox[2] <= im_width) and np.min(uv_cam[:, 2], axis=0) > 0
+            valid = (0 <= bbox[1] < im_height or 0 < bbox[3] <= im_height) and (
+                        0 <= bbox[0] < im_width or 0 < bbox[2] <= im_width) and np.min(uv_cam[:, 2], axis=0) > 0
+            if not valid:
+                anno['flag'][i] = 1
+                truncated = 1.0
+            elif valid and not inside:
+                _bbox = [0] * 4
+                _bbox[0] = max(0, bbox[0])
+                _bbox[1] = max(0, bbox[1])
+                _bbox[2] = min(im_width, bbox[2])
+                _bbox[3] = min(im_height, bbox[3])
+
+                truncated = 1.0 - ((_bbox[2] - _bbox[0]) * (_bbox[3] - _bbox[1])) / (
+                        (bbox[2] - bbox[0]) * (bbox[3] - bbox[1]))
+                bbox = _bbox
+            else:
+                truncated = 0.0
